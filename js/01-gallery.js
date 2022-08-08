@@ -23,14 +23,6 @@ const selectImage = (event) => {
     return;
   }
   event.preventDefault();
-
-  document.querySelector("img.gallery__image").onclick = () => {
-    originalImages.forEach((img) => {
-      event.preventDefault();
-      console.log(img.dataset.source);
-      basicLightbox.create(`<img ${img.dataset.source} width = 1280>`).show();
-    });
-  };
 };
 
 galleryList.addEventListener("click", selectImage);
