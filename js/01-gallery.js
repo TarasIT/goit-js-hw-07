@@ -5,8 +5,7 @@ const galleryList = document.querySelector("div.gallery");
 let originalImage;
 
 const imagesGrid = galleryItems
-  .map((galleryItem) => {
-    const { preview, original, description } = galleryItem;
+  .map(({ preview, original, description }) => {
     return `<div class="gallery__item"><a class="gallery__link" href=${original}><img class= "gallery__image" src=${preview} data-source=${original} alt="${description}" width = 340></a></div>`;
   })
   .join("");
