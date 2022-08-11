@@ -2,7 +2,6 @@ import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 const galleryList = document.querySelector("div.gallery");
-let originalImage;
 
 const imagesGrid = galleryItems
   .map(({ preview, original, description }) => {
@@ -11,25 +10,29 @@ const imagesGrid = galleryItems
   .join("");
 galleryList.innerHTML = imagesGrid;
 
-function selectImage(event) {
+const instance = basicLightbox.create(`<img src="" width="1280">`, {
+  onShow: (instance) => {
+    window.addEventListener("keydown", closeImageByEsc);
+  },
+  onClose: (instance) => {
+    window.removeEventListener("keydown", closeImageByEsc);
+  },
+});
+
+function onImageClick(event) {
   if (event.target.nodeName !== "IMG") {
     return;
   }
   event.preventDefault();
 
-  originalImage = basicLightbox.create(
-    `<img src=${event.target.dataset.source} width="1280">`
-  );
-
-  galleryList.addEventListener("keydown", closeImageByEsc);
-  return originalImage.show();
+  instance.element().querySelector("img").src = event.target.dataset.source;
+  instance.show();
 }
 
 function closeImageByEsc(event) {
   if (event.code === "Escape") {
-    galleryList.removeEventListener("keydown", closeImageByEsc);
-    return originalImage.close();
+    return instance.close();
   }
 }
 
-galleryList.addEventListener("click", selectImage);
+galleryList.addEventListener("click", onImageClick);
